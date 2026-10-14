@@ -1,0 +1,850 @@
+/* style.css - Moderní, responzivní styl optimalizovaný pro mobilní zařízení */
+
+:root {
+  --primary: #4f46e5;
+  --primary-hover: #4338ca;
+  --primary-light: #eef2ff;
+  --accent: #06b6d4;
+  --success: #10b981;
+  --border-color: #e2e8f0;
+
+  --bg-page: #f8fafc;
+  --bg-surface: #ffffff;
+  --bg-surface-alt: #f1f5f9;
+  --text-main: #0f172a;
+  --text-muted: #64748b;
+
+  --header-height: 54px;
+  --border-radius: 10px;
+  --shadow-sm: 0 1px 2px 0 rgba(0, 0, 0, 0.05);
+  --shadow-md: 0 4px 6px -1px rgba(0, 0, 0, 0.1);
+  --shadow-float: 0 14px 20px -4px rgba(0, 0, 0, 0.15);
+
+  /* Barvy kategorií */
+  --cat-structure: #4f46e5;
+  --cat-text: #0284c7;
+  --cat-media: #059669;
+  --cat-lists: #16a34a;
+  --cat-tables: #d97706;
+  --cat-layout: #7c3aed;
+  --cat-forms: #dc2626;
+  --cat-advanced: #db2777;
+}
+
+[data-theme="dark"] {
+  --bg-page: #0f172a;
+  --bg-surface: #1e293b;
+  --bg-surface-alt: #334155;
+  --border-color: #334155;
+  --text-main: #f8fafc;
+  --text-muted: #94a3b8;
+  --primary-light: rgba(79, 70, 229, 0.2);
+}
+
+* {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+  -webkit-tap-highlight-color: transparent;
+}
+
+body {
+  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
+  background-color: var(--bg-page);
+  color: var(--text-main);
+  height: 100dvh;
+  display: flex;
+  flex-direction: column;
+  overflow: hidden;
+  user-select: none;
+  -webkit-user-select: none;
+}
+
+/* ==========================================================================
+   HLAVIČKA / HEADER
+   ========================================================================== */
+.app-header {
+  height: var(--header-height);
+  background: var(--bg-surface);
+  border-bottom: 1px solid var(--border-color);
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 0 12px;
+  gap: 8px;
+  flex-shrink: 0;
+  z-index: 40;
+}
+
+.logo-area {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  font-weight: 800;
+  font-size: 1rem;
+  color: var(--primary);
+  white-space: nowrap;
+}
+
+.logo-icon {
+  width: 30px;
+  height: 30px;
+  background: var(--primary);
+  border-radius: 6px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: white;
+  font-weight: 800;
+  font-size: 0.8rem;
+  font-family: monospace;
+}
+
+.header-icon {
+  width: 18px;
+  height: 18px;
+  display: inline-block;
+  vertical-align: middle;
+  flex-shrink: 0;
+}
+
+/* Přepínač zobrazení: Pouze Editor a Náhled */
+.view-tabs {
+  display: flex;
+  background: var(--bg-surface-alt);
+  padding: 3px;
+  border-radius: 8px;
+  border: 1px solid var(--border-color);
+  gap: 2px;
+}
+
+.view-tab-btn {
+  background: transparent;
+  border: none;
+  padding: 6px 14px;
+  font-size: 0.85rem;
+  font-weight: 600;
+  color: var(--text-muted);
+  border-radius: 6px;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  white-space: nowrap;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 6px;
+}
+
+.view-tab-btn.active {
+  background: var(--bg-surface);
+  color: var(--primary);
+  box-shadow: var(--shadow-sm);
+}
+
+/* Akční tlačítka v hlavičce */
+.header-actions {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+}
+
+.btn-pill {
+  background: var(--primary);
+  color: white;
+  border: none;
+  padding: 6px 14px;
+  border-radius: 8px;
+  font-size: 0.85rem;
+  font-weight: 600;
+  cursor: pointer;
+  transition: background 0.15s, transform 0.1s;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 6px;
+}
+
+.btn-pill:active {
+  transform: scale(0.96);
+}
+
+.btn-icon {
+  background: var(--bg-surface-alt);
+  border: 1px solid var(--border-color);
+  color: var(--text-main);
+  border-radius: 8px;
+  padding: 6px 12px;
+  font-size: 0.85rem;
+  font-weight: 600;
+  cursor: pointer;
+  transition: background 0.15s;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 6px;
+}
+
+.btn-icon:hover {
+  background: var(--border-color);
+}
+
+/* ==========================================================================
+   HLAVNÍ PRACOVNÍ PLOCHA
+   ========================================================================== */
+.main-workspace {
+  display: flex;
+  flex: 1;
+  position: relative;
+  overflow: hidden;
+  height: calc(100dvh - var(--header-height));
+}
+
+/* ==========================================================================
+   PANEL NÁSTROJŮ / ELEMENT PALETTE
+   ========================================================================== */
+.elements-panel {
+  width: 290px;
+  background: var(--bg-surface);
+  border-right: 1px solid var(--border-color);
+  display: flex;
+  flex-direction: column;
+  flex-shrink: 0;
+  z-index: 30;
+  transition: transform 0.25s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+.panel-header {
+  padding: 12px;
+  border-bottom: 1px solid var(--border-color);
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.panel-title-row {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
+.panel-title {
+  font-size: 0.95rem;
+  font-weight: 700;
+}
+
+.panel-close-btn {
+  display: none;
+  background: none;
+  border: none;
+  font-size: 1.3rem;
+  cursor: pointer;
+  color: var(--text-muted);
+  line-height: 1;
+}
+
+/* Výběr kategorie pomocí selectu */
+.category-select-wrapper {
+  width: 100%;
+}
+
+.category-select {
+  width: 100%;
+  padding: 8px 10px;
+  border-radius: 8px;
+  border: 1px solid var(--border-color);
+  background: var(--bg-surface-alt);
+  color: var(--text-main);
+  font-size: 0.85rem;
+  font-weight: 600;
+  outline: none;
+  cursor: pointer;
+}
+
+.category-select:focus {
+  border-color: var(--primary);
+}
+
+/* Vyhledávání */
+.search-wrapper {
+  width: 100%;
+}
+
+.search-input {
+  width: 100%;
+  padding: 7px 10px;
+  border-radius: 8px;
+  border: 1px solid var(--border-color);
+  background: var(--bg-surface-alt);
+  color: var(--text-main);
+  font-size: 0.85rem;
+  outline: none;
+}
+
+.search-input:focus {
+  border-color: var(--primary);
+  background: var(--bg-surface);
+}
+
+/* Seznam karet prvků - 2 sloupce pro přehlednost na mobilu */
+.elements-list {
+  flex: 1;
+  overflow-y: auto;
+  padding: 10px 12px;
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 8px;
+  align-content: start;
+}
+
+/* Kompaktní karta elementu - obsahuje POUZE tag */
+.element-card {
+  background: var(--bg-surface);
+  border: 1.5px solid var(--border-color);
+  border-left-width: 4px;
+  border-radius: 8px;
+  padding: 10px 8px;
+  cursor: grab;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  text-align: center;
+  box-shadow: var(--shadow-sm);
+  transition: transform 0.15s, box-shadow 0.15s, border-color 0.15s;
+  touch-action: pan-y;
+  user-select: none;
+}
+
+.element-card:hover {
+  transform: translateY(-1px);
+  box-shadow: var(--shadow-md);
+  border-color: var(--primary);
+}
+
+.element-card:active {
+  cursor: grabbing;
+  transform: scale(0.96);
+}
+
+.element-card.is-dragging {
+  opacity: 0.3;
+}
+
+/* Barevné kódování kategorií */
+.element-card[data-cat="structure"] { border-left-color: var(--cat-structure); }
+.element-card[data-cat="text"]      { border-left-color: var(--cat-text); }
+.element-card[data-cat="media"]     { border-left-color: var(--cat-media); }
+.element-card[data-cat="lists"]     { border-left-color: var(--cat-lists); }
+.element-card[data-cat="tables"]    { border-left-color: var(--cat-tables); }
+.element-card[data-cat="layout"]    { border-left-color: var(--cat-layout); }
+.element-card[data-cat="forms"]     { border-left-color: var(--cat-forms); }
+.element-card[data-cat="advanced"]  { border-left-color: var(--cat-advanced); }
+
+.card-tag {
+  font-family: ui-monospace, SFMono-Regular, "SF Mono", Menlo, Consolas, monospace;
+  font-weight: 700;
+  font-size: 0.88rem;
+  color: var(--primary);
+  pointer-events: none;
+  word-break: break-all;
+}
+
+/* ==========================================================================
+   EDITOR SEKCE
+   ========================================================================== */
+.editor-section {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  position: relative;
+  background: var(--bg-surface);
+  overflow: hidden;
+}
+
+/* Rychlá lišta: Pouze Zpět, Znovu, Formátovat */
+.quick-coding-bar {
+  background: var(--bg-surface-alt);
+  border-bottom: 1px solid var(--border-color);
+  padding: 6px 12px;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  flex-shrink: 0;
+}
+
+.quick-key.action-key {
+  background: var(--bg-surface);
+  border: 1px solid var(--border-color);
+  color: var(--text-main);
+  padding: 6px 12px;
+  border-radius: 6px;
+  font-size: 0.8rem;
+  font-weight: 600;
+  cursor: pointer;
+  transition: background 0.1s;
+}
+
+.quick-key.action-key:active {
+  background: var(--primary-light);
+  border-color: var(--primary);
+}
+
+/* CodeMirror kontejner */
+.codemirror-wrapper {
+  flex: 1;
+  position: relative;
+  overflow: hidden;
+}
+
+.CodeMirror {
+  height: 100% !important;
+  font-family: "JetBrains Mono", Consolas, "Fira Code", Monaco, monospace;
+  font-size: 14px;
+  line-height: 1.5;
+}
+
+/* Vizuální drop indikátor */
+.drop-indicator-line {
+  position: absolute;
+  left: 0;
+  right: 0;
+  height: 3px;
+  background: var(--accent);
+  box-shadow: 0 0 8px var(--accent);
+  pointer-events: none;
+  z-index: 100;
+  display: none;
+}
+
+.drop-indicator-line::after {
+  content: 'Vložit zde';
+  position: absolute;
+  right: 12px;
+  top: -18px;
+  background: var(--accent);
+  color: white;
+  font-size: 0.65rem;
+  font-weight: bold;
+  padding: 2px 6px;
+  border-radius: 4px;
+  font-family: sans-serif;
+}
+
+/* Plovoucí touch ghost při tažení */
+#touch-drag-ghost {
+  position: fixed;
+  pointer-events: none;
+  z-index: 9999;
+  background: var(--primary);
+  color: white;
+  padding: 6px 12px;
+  border-radius: 16px;
+  font-weight: 700;
+  font-size: 0.85rem;
+  font-family: monospace;
+  box-shadow: var(--shadow-float);
+  transform: translate(-50%, -120%);
+  opacity: 0.95;
+  border: 2px solid white;
+}
+
+/* ==========================================================================
+   NÁHLED (PREVIEW SEKCE) - VŽDY PLNÉ ROZLIŠENÍ
+   ========================================================================== */
+.preview-section {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  background: #f1f5f9;
+  border-left: 1px solid var(--border-color);
+  position: relative;
+  overflow: hidden;
+}
+
+.preview-toolbar {
+  height: 44px;
+  background: var(--bg-surface);
+  border-bottom: 1px solid var(--border-color);
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 0 12px;
+  flex-shrink: 0;
+}
+
+.preview-title-badge {
+  font-size: 0.85rem;
+  font-weight: 700;
+  color: var(--text-muted);
+}
+
+.btn-refresh {
+  background: var(--bg-surface-alt);
+  border: 1px solid var(--border-color);
+  color: var(--text-main);
+  padding: 4px 10px;
+  border-radius: 6px;
+  font-size: 0.8rem;
+  font-weight: 600;
+  cursor: pointer;
+}
+
+.preview-container {
+  flex: 1;
+  display: flex;
+  width: 100%;
+  height: 100%;
+  overflow: hidden;
+}
+
+.preview-frame-wrapper {
+  background: white;
+  width: 100%;
+  height: 100%;
+  overflow: hidden;
+}
+
+.preview-iframe {
+  width: 100%;
+  height: 100%;
+  border: none;
+  background: white;
+}
+
+/* ==========================================================================
+   MODÁLNÍ OKNO NASTAVENÍ (POUZE BAREVNÝ MOTIV)
+   ========================================================================== */
+.modal-overlay {
+  position: fixed;
+  inset: 0;
+  background: rgba(15, 23, 42, 0.5);
+  backdrop-filter: blur(3px);
+  z-index: 200;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 16px;
+  opacity: 0;
+  pointer-events: none;
+  transition: opacity 0.2s ease;
+}
+
+.modal-overlay.open {
+  opacity: 1;
+  pointer-events: auto;
+}
+
+.modal-card {
+  background: var(--bg-surface);
+  border-radius: 14px;
+  width: 100%;
+  max-width: 420px;
+  box-shadow: var(--shadow-float);
+  overflow: hidden;
+  transform: translateY(10px);
+  transition: transform 0.2s ease;
+}
+
+.modal-overlay.open .modal-card {
+  transform: translateY(0);
+}
+
+.modal-header {
+  padding: 16px 22px;
+  border-bottom: 1px solid var(--border-color);
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
+.modal-title {
+  font-size: 1.05rem;
+  font-weight: 700;
+}
+
+.modal-close-btn {
+  background: none;
+  border: none;
+  font-size: 1.4rem;
+  cursor: pointer;
+  color: var(--text-muted);
+  line-height: 1;
+  padding: 4px;
+}
+
+.modal-body {
+  padding: 22px;
+  display: flex;
+  flex-direction: column;
+}
+
+.theme-setting-row {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+  padding: 4px 0;
+}
+
+.theme-label {
+  font-size: 0.9rem;
+  font-weight: 600;
+}
+
+.btn-secondary {
+  background: var(--bg-surface-alt);
+  border: 1px solid var(--border-color);
+  color: var(--text-main);
+  padding: 8px 14px;
+  border-radius: 6px;
+  font-size: 0.85rem;
+  font-weight: 600;
+  cursor: pointer;
+}
+
+.btn-primary {
+  background: var(--primary);
+  border: none;
+  color: white;
+  padding: 8px 14px;
+  border-radius: 6px;
+  font-size: 0.85rem;
+  font-weight: 600;
+  cursor: pointer;
+  transition: background 0.15s;
+}
+
+.btn-primary:hover {
+  background: var(--primary-hover);
+}
+
+.btn-primary:disabled {
+  opacity: 0.6;
+  cursor: not-allowed;
+}
+
+.settings-divider {
+  border: 0;
+  border-top: 1px solid var(--border-color);
+  margin: 16px 0;
+}
+
+.save-section {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+
+.save-header-row {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+}
+
+.save-data-form {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+  background: var(--bg-surface-alt);
+  padding: 14px;
+  border-radius: 8px;
+  border: 1px solid var(--border-color);
+}
+
+.form-group {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+}
+
+.form-label {
+  font-size: 0.8rem;
+  font-weight: 600;
+  color: var(--text-main);
+}
+
+.form-input {
+  padding: 8px 10px;
+  border-radius: 6px;
+  border: 1px solid var(--border-color);
+  background: var(--bg-surface);
+  color: var(--text-main);
+  font-size: 0.85rem;
+  outline: none;
+}
+
+.form-input:focus {
+  border-color: var(--primary);
+}
+
+.form-actions {
+  display: flex;
+  gap: 8px;
+  margin-top: 4px;
+}
+
+.save-feedback {
+  padding: 8px 10px;
+  border-radius: 6px;
+  font-size: 0.8rem;
+  font-weight: 600;
+  line-height: 1.35;
+}
+
+.save-feedback.success {
+  background: #ecfdf5;
+  color: #065f46;
+  border: 1px solid #a7f3d0;
+}
+
+.save-feedback.error {
+  background: #fef2f2;
+  color: #991b1b;
+  border: 1px solid #fecaca;
+}
+
+[data-theme="dark"] .save-feedback.success {
+  background: rgba(16, 185, 129, 0.2);
+  color: #34d399;
+  border-color: rgba(16, 185, 129, 0.3);
+}
+
+[data-theme="dark"] .save-feedback.error {
+  background: rgba(239, 68, 68, 0.2);
+  color: #f87171;
+  border-color: rgba(239, 68, 68, 0.3);
+}
+
+/* Toast notifikace */
+.toast-container {
+  position: fixed;
+  bottom: 24px;
+  left: 50%;
+  transform: translateX(-50%);
+  z-index: 9999;
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  pointer-events: none;
+}
+
+.toast {
+  background: #1e293b;
+  color: white;
+  padding: 8px 16px;
+  border-radius: 20px;
+  font-size: 0.85rem;
+  font-weight: 600;
+  box-shadow: var(--shadow-md);
+  animation: toastFadeIn 0.2s ease-out;
+}
+
+@keyframes toastFadeIn {
+  from { opacity: 0; transform: translateY(8px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+
+/* ==========================================================================
+   RESPONSIVITA PRO MOBILNÍ ZAŘÍZENÍ
+   ========================================================================== */
+@media (max-width: 768px) {
+  .logo-text {
+    display: none !important;
+  }
+
+  .btn-label {
+    display: none !important;
+  }
+
+  .view-tab-btn, .btn-pill, .btn-icon {
+    padding: 6px 10px;
+    min-width: 38px;
+    height: 36px;
+    gap: 0;
+  }
+
+  .app-header {
+    padding: 0 8px;
+  }
+
+  .elements-panel {
+    position: fixed;
+    top: var(--header-height);
+    bottom: 0;
+    left: 0;
+    width: 85vw;
+    max-width: 320px;
+    height: calc(100dvh - var(--header-height));
+    box-shadow: var(--shadow-float);
+    transform: translateX(-100%);
+    z-index: 35;
+    border-right: 1px solid var(--border-color);
+  }
+
+  .elements-panel.open {
+    transform: translateX(0);
+  }
+
+  .panel-close-btn {
+    display: block;
+  }
+
+  .drawer-backdrop {
+    position: fixed;
+    top: var(--header-height);
+    bottom: 0;
+    left: 0;
+    right: 0;
+    background: rgba(15, 23, 42, 0.4);
+    z-index: 34;
+    opacity: 0;
+    pointer-events: none;
+    transition: opacity 0.25s;
+  }
+
+  .drawer-backdrop.active {
+    opacity: 1;
+    pointer-events: auto;
+  }
+
+  body.view-editor .editor-section {
+    display: flex;
+  }
+  body.view-editor .preview-section {
+    display: none;
+  }
+
+  body.view-preview .editor-section {
+    display: none;
+  }
+  body.view-preview .preview-section {
+    display: flex;
+  }
+}
+
+@media (min-width: 769px) {
+  .logo-text {
+    display: inline-block;
+  }
+
+  .btn-label {
+    display: inline;
+  }
+  body.view-editor .editor-section {
+    display: flex;
+  }
+  body.view-editor .preview-section {
+    display: none;
+  }
+
+  body.view-preview .editor-section {
+    display: none;
+  }
+  body.view-preview .preview-section {
+    display: flex;
+  }
+
+  .drawer-backdrop {
+    display: none !important;
+  }
+}

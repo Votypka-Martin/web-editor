@@ -1,0 +1,204 @@
+<!DOCTYPE html>
+<html lang="cs">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover">
+  <title>HTML Editor - Výuka a procvičování HTML</title>
+  
+  <!-- Lokální CodeMirror styly -->
+  <link rel="stylesheet" href="vendor/codemirror/codemirror.min.css">
+  <link rel="stylesheet" href="vendor/codemirror/dracula.min.css">
+  <link rel="stylesheet" href="vendor/codemirror/eclipse.min.css">
+
+  <!-- Aplikace CSS -->
+  <link rel="stylesheet" href="css/style.css">
+</head>
+<body class="view-editor">
+
+  <!-- =========================================================================
+       HLAVNÍ HORNÍ LIŠTA (HEADER)
+       ========================================================================= -->
+  <header class="app-header">
+    <div class="logo-area">
+      <div class="logo-icon">&lt;/&gt;</div>
+      <div class="logo-text">HTML Editor</div>
+    </div>
+
+    <!-- Přepínání mezi Editorem a Náhledem -->
+    <nav class="view-tabs" aria-label="Přepínání zobrazení">
+      <button id="tab-editor" class="view-tab-btn active" title="Editor kódu">
+        <svg class="header-icon" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+          <polyline points="16 18 22 12 16 6"></polyline>
+          <polyline points="8 6 2 12 8 18"></polyline>
+        </svg>
+        <span class="btn-label">Editor</span>
+      </button>
+      <button id="tab-preview" class="view-tab-btn" title="Živý náhled">
+        <svg class="header-icon" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+          <path d="M2 12s3-7 10-7 10 7 10 7-3 7-10 7-10-7-10-7Z"></path>
+          <circle cx="12" cy="12" r="3"></circle>
+        </svg>
+        <span class="btn-label">Náhled</span>
+      </button>
+    </nav>
+
+    <!-- Akční tlačítka v hlavičce -->
+    <div class="header-actions">
+      <!-- Tlačítko pro otevření panelu prvků -->
+      <button id="btn-toggle-drawer" class="btn-pill" title="Panel HTML prvků">
+        <svg class="header-icon" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+          <rect width="7" height="7" x="3" y="3" rx="1"></rect>
+          <rect width="7" height="7" x="14" y="3" rx="1"></rect>
+          <rect width="7" height="7" x="14" y="14" rx="1"></rect>
+          <rect width="7" height="7" x="3" y="14" rx="1"></rect>
+        </svg>
+        <span class="btn-label">Prvky</span>
+      </button>
+
+      <!-- Nabídka nastavení motivu -->
+      <button id="btn-settings" class="btn-icon" title="Nastavení vzhledu">
+        <svg class="header-icon" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+          <circle cx="12" cy="12" r="3"></circle>
+          <path d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 0 1 0 2.83 2 2 0 0 1-2.83 0l-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1 1.51V21a2 2 0 0 1-2 2 2 2 0 0 1-2-2v-.09A1.65 1.65 0 0 0 9 19.4a1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 0 1-2.83 0 2 2 0 0 1 0-2.83l.06-.06a1.65 1.65 0 0 0 .33-1.82 1.65 1.65 0 0 0-1.51-1H3a2 2 0 0 1-2-2 2 2 0 0 1 2-2h.09A1.65 1.65 0 0 0 4.6 9a1.65 1.65 0 0 0-.33-1.82l-.06-.06a2 2 0 0 1 0-2.83 2 2 0 0 1 2.83 0l.06.06a1.65 1.65 0 0 0 1.82.33H9a1.65 1.65 0 0 0 1-1.51V3a2 2 0 0 1 2-2 2 2 0 0 1 2 2v.09a1.65 1.65 0 0 0 1 1.51 1.65 1.65 0 0 0 1.82-.33l.06-.06a2 2 0 0 1 2.83 0 2 2 0 0 1 0 2.83l-.06.06a1.65 1.65 0 0 0-.33 1.82V9a1.65 1.65 0 0 0 1.51 1H21a2 2 0 0 1 2 2 2 2 0 0 1-2 2h-.09a1.65 1.65 0 0 0-1.51 1z"></path>
+        </svg>
+        <span class="btn-label">Nastavení</span>
+      </button>
+    </div>
+  </header>
+
+  <!-- Mobilní podkres pro vysouvací panel prvků -->
+  <div id="drawer-backdrop" class="drawer-backdrop"></div>
+
+  <!-- =========================================================================
+       HLAVNÍ PRACOVNÍ PROSTOR
+       ========================================================================= -->
+  <main class="main-workspace">
+
+    <!-- PANEL NÁSTROJŮ S PRVKY -->
+    <aside id="elements-panel" class="elements-panel" aria-label="Panel HTML elementů">
+      <div class="panel-header">
+        <div class="panel-title-row">
+          <div class="panel-title">HTML prvky</div>
+          <button id="btn-close-drawer" class="panel-close-btn" title="Zavřít panel">&times;</button>
+        </div>
+
+        <!-- Výběr kategorie pomocí selectu -->
+        <div class="category-select-wrapper">
+          <select id="category-select" class="category-select" aria-label="Výběr kategorie prvků">
+            <!-- Možnosti generovány dynamicky z elements-data.js -->
+          </select>
+        </div>
+
+        <!-- Vyhledávání -->
+        <div class="search-wrapper">
+          <input type="text" id="elements-search" class="search-input" placeholder="Hledat prvek (např. h1, p, img)..." autocomplete="off">
+        </div>
+      </div>
+
+      <!-- Seznam karet prvků (pouze tagy) -->
+      <div id="elements-list" class="elements-list">
+        <!-- Generováno dynamicky -->
+      </div>
+    </aside>
+
+    <!-- SEKCE EDITORU KÓDU -->
+    <section class="editor-section" aria-label="Editor kódu">
+      <!-- Mobilní lišta: pouze Zpět, Znovu a Formátovat -->
+      <div class="quick-coding-bar" id="quick-coding-bar">
+        <button class="quick-key action-key" id="btn-quick-undo" title="Krok zpět">Zpět</button>
+        <button class="quick-key action-key" id="btn-quick-redo" title="Krok vpřed">Znovu</button>
+        <button class="quick-key action-key" id="btn-quick-format" title="Zarovnat kód">Formátovat</button>
+      </div>
+
+      <!-- Kontejner pro CodeMirror -->
+      <div class="codemirror-wrapper" id="editor-container">
+        <!-- Vizuální linka ukazující drop pozici při tažení -->
+        <div id="drop-indicator-line" class="drop-indicator-line"></div>
+      </div>
+    </section>
+
+    <!-- SEKCE NÁHLEDU (PREVIEW) -->
+    <section class="preview-section" aria-label="Živý náhled">
+      <div class="preview-toolbar">
+        <div class="preview-title-badge">Náhled stránky</div>
+        <button id="btn-refresh-preview" class="btn-refresh" title="Znovu načíst náhled">Obnovit</button>
+      </div>
+
+      <div class="preview-container">
+        <div id="preview-frame-wrapper" class="preview-frame-wrapper">
+          <iframe id="preview-iframe" class="preview-iframe" sandbox="allow-scripts allow-modals allow-forms allow-same-origin" title="Náhled webu"></iframe>
+        </div>
+      </div>
+    </section>
+  </main>
+
+  <!-- =========================================================================
+       MODÁLNÍ OKNO: POUZE NASTAVENÍ BAREVNÉHO MOTIVU
+       ========================================================================= -->
+  <div id="modal-settings" class="modal-overlay">
+    <div class="modal-card">
+      <div class="modal-header">
+        <div class="modal-title">Nastavení</div>
+        <button class="modal-close-btn" data-close="modal-settings">&times;</button>
+      </div>
+      <div class="modal-body">
+        <div class="theme-setting-row">
+          <label for="btn-toggle-theme" class="theme-label">Barevný motiv:</label>
+          <button id="btn-toggle-theme" class="btn-secondary">Přepnout Tmavý / Světlý</button>
+        </div>
+
+        <hr class="settings-divider">
+
+        <div class="save-section">
+          <div class="save-header-row" id="save-header-row">
+            <span class="theme-label">Uložení kódu:</span>
+            <button id="btn-show-save-form" class="btn-primary">Uložit</button>
+          </div>
+
+          <!-- Formulář pro odeslání dat na MockAPI -->
+          <form id="save-data-form" class="save-data-form" style="display: none;">
+            <div class="form-group">
+              <label for="save-input-name" class="form-label">Jméno:</label>
+              <input type="text" id="save-input-name" class="form-input" placeholder="Zadejte své jméno" required autocomplete="name">
+            </div>
+            <div class="form-group">
+              <label for="save-input-pin" class="form-label">Čtyřmístný číselný PIN:</label>
+              <input type="password" id="save-input-pin" class="form-input" placeholder="Např. 1234" maxlength="4" pattern="[0-9]{4}" inputmode="numeric" required autocomplete="off">
+            </div>
+            <div class="form-actions">
+              <button type="submit" id="btn-submit-save" class="btn-primary">Potvrdit a odeslat</button>
+              <button type="button" id="btn-cancel-save" class="btn-secondary">Zrušit</button>
+            </div>
+            <div id="save-feedback" class="save-feedback" style="display: none;"></div>
+          </form>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Kontejner pro toast zprávy -->
+  <div id="toast-container" class="toast-container"></div>
+
+  <!-- Lokální skripty pro CodeMirror s CDN fallbackem -->
+  <script src="vendor/codemirror/codemirror.min.js"></script>
+  <script src="vendor/codemirror/xml.min.js"></script>
+  <script src="vendor/codemirror/javascript.min.js"></script>
+  <script src="vendor/codemirror/css.min.js"></script>
+  <script src="vendor/codemirror/htmlmixed.min.js"></script>
+  <script src="vendor/codemirror/closetag.min.js"></script>
+  <script src="vendor/codemirror/matchbrackets.min.js"></script>
+
+  <!-- Fallback skript pro načtení z CDN pokud by lokální selhaly -->
+  <script>
+    if (typeof CodeMirror === 'undefined') {
+      var script = document.createElement('script');
+      script.src = 'https://cdnjs.cloudflare.com/ajax/libs/codemirror/5.65.16/codemirror.min.js';
+      document.head.appendChild(script);
+    }
+  </script>
+
+  <!-- Aplikační skripty -->
+  <script src="js/elements-data.js"></script>
+  <script src="js/app.js"></script>
+</body>
+</html>
