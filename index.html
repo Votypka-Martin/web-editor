@@ -103,11 +103,24 @@
 
     <!-- SEKCE EDITORU KÓDU -->
     <section class="editor-section" aria-label="Editor kódu">
-      <!-- Mobilní lišta: pouze Zpět, Znovu a Formátovat -->
+      <!-- Lišta akcí a karet souborů -->
       <div class="quick-coding-bar" id="quick-coding-bar">
-        <button class="quick-key action-key" id="btn-quick-undo" title="Krok zpět">Zpět</button>
-        <button class="quick-key action-key" id="btn-quick-redo" title="Krok vpřed">Znovu</button>
-        <button class="quick-key action-key" id="btn-quick-format" title="Zarovnat kód">Formátovat</button>
+        <div class="quick-actions-group">
+          <button class="quick-key action-key" id="btn-quick-undo" title="Krok zpět">Zpět</button>
+          <button class="quick-key action-key" id="btn-quick-redo" title="Krok vpřed">Znovu</button>
+          <button class="quick-key action-key" id="btn-quick-format" title="Zarovnat kód">Formátovat</button>
+        </div>
+        <div class="file-tabs-bar" id="file-tabs-bar">
+          <div class="file-tabs-list" id="file-tabs-list">
+            <!-- Dynamicky generované karty souborů -->
+          </div>
+          <button class="btn-add-file" id="btn-add-file" title="Přidat nový soubor" aria-label="Přidat soubor">
+            <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+              <line x1="12" y1="5" x2="12" y2="19"></line>
+              <line x1="5" y1="12" x2="19" y2="12"></line>
+            </svg>
+          </button>
+        </div>
       </div>
 
       <!-- Kontejner pro CodeMirror -->
@@ -120,13 +133,36 @@
     <!-- SEKCE NÁHLEDU (PREVIEW) -->
     <section class="preview-section" aria-label="Živý náhled">
       <div class="preview-toolbar">
-        <div class="preview-title-badge">Náhled stránky</div>
-        <button id="btn-refresh-preview" class="btn-refresh" title="Znovu načíst náhled">Obnovit</button>
+        <div class="preview-browser-tabs" id="preview-browser-tabs">
+          <!-- Dynamicky generované karty v náhledu (prohlížečové taby) -->
+        </div>
+        <div class="preview-toolbar-actions">
+          <button id="btn-refresh-preview" class="btn-refresh" title="Znovu načíst náhled">
+            <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+              <path d="M21.5 2v6h-6M21.34 15.57a10 10 0 1 1-.57-8.38l5.67-5.67"/>
+            </svg>
+            <span class="refresh-label">Obnovit</span>
+          </button>
+        </div>
+      </div>
+
+      <!-- Lišta s adresou při otevření externí URL -->
+      <div id="preview-url-bar" class="preview-url-bar" style="display: none;">
+        <span class="url-badge">URL:</span>
+        <span id="preview-url-display" class="preview-url-display"></span>
+        <a id="preview-url-external-link" href="#" target="_blank" rel="noopener noreferrer" class="preview-external-link" title="Otevřít v novém okně prohlížeče">
+          <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+            <path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"></path>
+            <polyline points="15 3 21 3 21 9"></polyline>
+            <line x1="10" y1="14" x2="21" y2="3"></line>
+          </svg>
+          <span>Otevřít</span>
+        </a>
       </div>
 
       <div class="preview-container">
         <div id="preview-frame-wrapper" class="preview-frame-wrapper">
-          <iframe id="preview-iframe" class="preview-iframe" sandbox="allow-scripts allow-modals allow-forms allow-same-origin" title="Náhled webu"></iframe>
+          <iframe id="preview-iframe" class="preview-iframe" sandbox="allow-scripts allow-modals allow-forms allow-same-origin allow-popups allow-popups-to-escape-sandbox" title="Náhled webu"></iframe>
         </div>
       </div>
     </section>
@@ -170,6 +206,31 @@
               <button type="button" id="btn-cancel-save" class="btn-secondary">Zrušit</button>
             </div>
             <div id="save-feedback" class="save-feedback" style="display: none;"></div>
+          </form>
+
+          <hr class="settings-divider" style="margin: 4px 0;">
+
+          <!-- Načtení dat z MockAPI -->
+          <div class="save-header-row" id="load-header-row">
+            <span class="theme-label">Načtení kódu:</span>
+            <button id="btn-show-load-form" class="btn-secondary">Načíst</button>
+          </div>
+
+          <!-- Formulář pro načtení dat z MockAPI -->
+          <form id="load-data-form" class="save-data-form" style="display: none;">
+            <div class="form-group">
+              <label for="load-input-name" class="form-label">Jméno:</label>
+              <input type="text" id="load-input-name" class="form-input" placeholder="Zadejte své jméno" required autocomplete="name">
+            </div>
+            <div class="form-group">
+              <label for="load-input-pin" class="form-label">Čtyřmístný číselný PIN:</label>
+              <input type="password" id="load-input-pin" class="form-input" placeholder="Např. 1234" maxlength="4" pattern="[0-9]{4}" inputmode="numeric" required autocomplete="off">
+            </div>
+            <div class="form-actions">
+              <button type="submit" id="btn-submit-load" class="btn-primary">Načíst data</button>
+              <button type="button" id="btn-cancel-load" class="btn-secondary">Zrušit</button>
+            </div>
+            <div id="load-feedback" class="save-feedback" style="display: none;"></div>
           </form>
         </div>
       </div>
